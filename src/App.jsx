@@ -19,6 +19,7 @@ import ReportsPage from './pages/Reports/ReportsPage';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import SupplierList from './pages/Suppliers/SupplierList';
+import NotFound from './pages/NotFound';
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -48,6 +49,9 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/suppliers" element={<SupplierList />} />
+              
+              {/* Fallback 404 Route */}
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Route>
         </Routes>
