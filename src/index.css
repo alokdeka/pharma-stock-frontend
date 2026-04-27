@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@600;700&display=swap');
+
+:root {
+  /* Brand */
+  --teal-900:  #0d3d3d;
+  --teal-700:  #0f6460;
+  --teal-500:  #14b8a6;
+  --teal-300:  #5eead4;
+  --teal-100:  #ccfbf1;
+
+  /* Surface */
+  --bg-base:   #f0fafa;
+  --bg-card:   #ffffff;
+  --bg-sidebar:#0d3d3d;
+
+  /* Text */
+  --text-primary:   #0d3d3d;
+  --text-secondary: #4b7272;
+  --text-on-dark:   #e6faf8;
+
+  /* Semantic — Expiry Status */
+  --status-red:    #ef4444;
+  --status-yellow: #f59e0b;
+  --status-green:  #10b981;
+
+  /* Utility */
+  --border:   #d1f0eb;
+  --shadow:   0 2px 12px rgba(20, 184, 166, 0.10);
+
+  /* Fonts */
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--teal-500);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.page-transition {
+  animation: pageFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-sidebar {
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  color: var(--text-on-dark);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.app-sidebar.closed {
+  width: 0px;
+  padding: 0;
+  border: none;
+}
+
+.mobile-menu-btn {
+  display: block;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+}
+
+@media (max-width: 768px) {
+  .app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    width: 240px !important;
+  }
+  .app-sidebar.open {
+    transform: translateX(0);
+  }
+  .app-sidebar.closed {
+    width: 240px;
+  }
+}
