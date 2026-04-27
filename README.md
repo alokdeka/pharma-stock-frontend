@@ -44,3 +44,4 @@ To compile and instantiate the GUI locally on your development machine:
 - **Distraction-Free Workspace**: The Sidebar natively observes DOM events, allowing it to mathematically squash to exactly `0px` horizontally when toggled so you can focus entirely on your DataTables.
 - **Smart Notification Hub**: A custom polling mechanism queries the backend every 30 seconds pulling intelligent "Urgent Expiry" signals into your local Bell icon.
 - **Omni-Recovery Loop**: Integrated URL token-scanning seamlessly flips the standard `/login` interface into security-override "Password Reset" contexts by natively scanning React-Router `useLocation` queries!
+- **Resilient Route Execution**: A globally mounted Wildcard boundary `(<Route path="*" />)` cohesively intercepts any broken HTTP parameters or corrupted internal navigation and routes entirely broken pages seamlessly into a unified 404 interface completely contained within the persistent AppShell boundaries.
