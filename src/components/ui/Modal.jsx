@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 export default function Modal({ title, isOpen, onClose, children }) {
@@ -10,8 +11,8 @@ export default function Modal({ title, isOpen, onClose, children }) {
 
   if (!isOpen) return null;
 
-  return (
-    <div onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+  return createPortal(
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 99999 }}>
       <div onClick={(e) => e.stopPropagation()} className="card" style={{ width: '100%', maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto', position: 'relative' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid var(--border)', paddingBottom: '10px' }}>
           <h2 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-display)' }}>{title}</h2>
@@ -19,6 +20,7 @@ export default function Modal({ title, isOpen, onClose, children }) {
         </div>
         <div>{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

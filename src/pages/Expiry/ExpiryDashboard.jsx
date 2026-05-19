@@ -42,7 +42,10 @@ export default function ExpiryDashboard() {
     { key: 'expiry_date', label: 'Expiry Date', render: (val) => formatDate(val) },
     { key: 'days_to_expiry', label: 'Days Left', render: (val) => `${val} days` },
     { key: 'quantity', label: 'Qty' },
-    { key: 'status', label: 'Status', render: (val) => <Badge status={val} label={val === 'red' ? 'Critical' : val === 'yellow' ? 'Warning' : 'Safe'} /> }
+    { key: 'status', label: 'Status', render: (val, row) => {
+      if (row.days_to_expiry < 0) return <Badge status="red" label="Expired" />;
+      return <Badge status={val} label={val === 'red' ? 'Critical' : val === 'yellow' ? 'Warning' : 'Safe'} />;
+    }}
   ];
 
   if (loading) return <Loader />;

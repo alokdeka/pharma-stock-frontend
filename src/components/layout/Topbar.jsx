@@ -77,7 +77,7 @@ export default function Topbar({ toggleMenu }) {
   };
 
   return (
-    <div style={{ height: '60px', backgroundColor: 'var(--bg-card)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', position: 'relative' }}>
+    <div style={{ height: '60px', backgroundColor: 'var(--bg-card)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', position: 'relative', zIndex: 50 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <button className="mobile-menu-btn" onClick={toggleMenu}><Menu size={24} color="var(--text-primary)" /></button>
         <h2 style={{ fontSize: '1.25rem', margin: 0, color: 'var(--text-primary)' }}>{title}</h2>
@@ -86,7 +86,9 @@ export default function Topbar({ toggleMenu }) {
         
         <div style={{ position: 'relative' }} ref={dropdownRef}>
           <button onClick={() => setShowDropdown(!showDropdown)} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <Bell size={20} color="var(--text-secondary)" />
+            <div className={alerts.length > 0 && !showDropdown ? "bell-shake" : ""}>
+              <Bell size={20} color="var(--text-secondary)" />
+            </div>
             {alerts.length > 0 && <span style={{ position: 'absolute', top: '-4px', right: '-4px', backgroundColor: 'var(--status-red)', color: '#fff', fontSize: '10px', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>{alerts.length}</span>}
           </button>
 

@@ -21,6 +21,9 @@ export default function BatchList() {
   // Sell Modal State
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [sellForm, setSellForm] = useState({ medicine_id: null, quantity: '', reference: '' });
+  
+  // Success Modal State
+  const [successModal, setSuccessModal] = useState({ isOpen: false, message: '' });
 
   const loadData = async () => {
     try {
@@ -53,7 +56,7 @@ export default function BatchList() {
       await sellBatch(sellForm.medicine_id, { quantity: sellForm.quantity, reference: sellForm.reference });
       setSellModalOpen(false);
       loadData();
-      alert('Sale recorded successfully. FEFO logic applied.');
+      setSuccessModal({ isOpen: true, message: 'Sale recorded successfully. FEFO logic applied.' });
     } catch (err) {
       alert(err.response?.data?.message || 'Error recording sale');
     }
@@ -66,6 +69,7 @@ export default function BatchList() {
 
   const getStatus = (expDate) => {
     const days = (new Date(expDate) - new Date()) / (1000 * 60 * 60 * 24);
+    if (days < 0) return 'expired';
     if (days <= 30) return 'red';
     if (days <= 60) return 'yellow';
     return 'green';
@@ -79,16 +83,19 @@ export default function BatchList() {
     { key: 'quantity', label: 'Qty' },
     { key: 'status', label: 'Status', render: (_, row) => {
         const status = getStatus(row.expiry_date);
+        if (status === 'expired') return <Badge status="red" label="Expired" style={{ backgroundColor: '#fee2e2', color: '#b91c1c' }} />;
         return <Badge status={status} label={status === 'red' ? 'Critical' : status === 'yellow' ? 'Warning' : 'Safe'} />;
     }},
-    { key: 'actions', label: 'Actions', render: (_, row) => (
+    { key: 'actions', label: 'Actions', render: (_, row) => {
+      const status = getStatus(row.expiry_date);
+      return (
       <div style={{ display: 'flex', gap: '8px' }}>
         <button onClick={() => navigate(`/batches/${row.id}`)} style={{ color: 'var(--teal-500)', fontSize: '0.8rem' }}>View</button>
-        {['admin', 'manager'].includes(role) && row.quantity > 0 && (
+        {['admin', 'manager'].includes(role) && row.quantity > 0 && status !== 'expired' && (
           <button onClick={() => openSellModal(row.medicine_id)} style={{ color: 'var(--status-yellow)', fontSize: '0.8rem' }}>Sell</button>
         )}
       </div>
-    )}
+    )}}
   ];
 
   if (loading) return <Loader />;
@@ -119,6 +126,21 @@ export default function BatchList() {
           </div>
           <button type="submit" style={{ backgroundColor: 'var(--teal-500)', color: '#fff', padding: '10px', borderRadius: '6px', marginTop: '8px' }}>Submit Sale</button>
         </form>
+      </Modal>
+
+      <Modal title="Success" isOpen={successModal.isOpen} onClose={() => setSuccessModal({ isOpen: false, message: '' })}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '16px' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--status-green)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <p style={{ fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '24px' }}>{successModal.message}</p>
+          <button 
+            onClick={() => setSuccessModal({ isOpen: false, message: '' })} 
+            style={{ backgroundColor: 'var(--teal-500)', color: '#fff', padding: '8px 24px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}
+          >
+            Acknowledge
+          </button>
+        </div>
       </Modal>
     </div>
   );

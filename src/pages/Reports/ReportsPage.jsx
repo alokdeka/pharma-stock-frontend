@@ -12,7 +12,20 @@ export default function ReportsPage() {
   const [financials, setFinancials] = useState(null);
   const [loading, setLoading] = useState(false);
   const [batchNum, setBatchNum] = useState('');
-  const [dateRange, setDateRange] = useState({ from: '', to: '' });
+
+  const getLocalYYYYMMDD = (d) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  const getToday = () => getLocalYYYYMMDD(new Date());
+  const getLastWeek = () => {
+    const d = new Date();
+    d.setDate(d.getDate() - 7);
+    return getLocalYYYYMMDD(d);
+  };
+  const [dateRange, setDateRange] = useState({ from: getLastWeek(), to: getToday() });
 
   const fetchInventory = async () => {
     setLoading(true);
@@ -22,7 +35,6 @@ export default function ReportsPage() {
 
   const fetchBatchSales = async (e) => {
     e?.preventDefault();
-    if (!batchNum) return;
     setLoading(true);
     try { const res = await getBatchSales(batchNum); setData(res.data.data); } 
     catch (e) { setData([]); } finally { setLoading(false); }
@@ -47,6 +59,8 @@ export default function ReportsPage() {
     setData([]);
     if (activeTab === 'inventory') fetchInventory();
     if (activeTab === 'financials') fetchFinancials();
+    if (activeTab === 'transactions') fetchTransactions();
+    if (activeTab === 'batchSales') fetchBatchSales();
   }, [activeTab]);
 
   const handleExport = () => {
@@ -65,6 +79,7 @@ export default function ReportsPage() {
     ];
     if (activeTab === 'batchSales') return [
       { key: 'created_at', label: 'Date', render: val => formatDate(val) },
+      { key: 'batch_number', label: 'Batch No' },
       { key: 'quantity', label: 'Qty' }, { key: 'reference', label: 'Ref/Invoice' },
       { key: 'created_by_name', label: 'User' }
     ];
@@ -98,8 +113,9 @@ export default function ReportsPage() {
             <div>
               {activeTab === 'batchSales' && (
                 <form onSubmit={fetchBatchSales} style={{ display: 'flex', gap: '8px' }}>
-                  <input placeholder="Enter Batch No..." value={batchNum} onChange={e => setBatchNum(e.target.value)} required />
+                  <input placeholder="Search Batch No..." value={batchNum} onChange={e => setBatchNum(e.target.value)} />
                   <button type="submit" style={{ backgroundColor: 'var(--teal-500)', color: '#fff', padding: '0 16px', borderRadius: '6px' }}>Search</button>
+                  {batchNum && <button type="button" onClick={() => { setBatchNum(''); setTimeout(fetchBatchSales, 0); }} style={{ backgroundColor: '#f1f5f9', color: 'var(--text-primary)', padding: '0 16px', borderRadius: '6px' }}>Clear</button>}
                 </form>
               )}
               {activeTab === 'transactions' && (

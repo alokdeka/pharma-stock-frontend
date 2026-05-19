@@ -13,6 +13,7 @@ export default function SupplierList() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, id: null });
+  const [successModal, setSuccessModal] = useState({ isOpen: false, message: '' });
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '', contact: '', address: '' });
 
@@ -41,6 +42,7 @@ export default function SupplierList() {
       else await createSupplier(form);
       setModalOpen(false);
       loadData();
+      setSuccessModal({ isOpen: true, message: editingId ? 'Supplier successfully updated.' : 'New supplier registered successfully.' });
     } catch (err) { alert(err.response?.data?.message || 'Error saving supplier'); }
   };
 
@@ -83,25 +85,25 @@ export default function SupplierList() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <label>Company Name *</label>
-            <input required value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
+            <input required value={form.name || ''} onChange={e => setForm({...form, name: e.target.value})} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <label>Contact Person</label>
-            <input value={form.contact} onChange={e => setForm({...form, contact: e.target.value})} />
+            <input value={form.contact || ''} onChange={e => setForm({...form, contact: e.target.value})} />
           </div>
           <div style={{ display: 'flex', gap: '16px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
               <label>Email</label>
-              <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
+              <input type="email" value={form.email || ''} onChange={e => setForm({...form, email: e.target.value})} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
               <label>Phone</label>
-              <input value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
+              <input value={form.phone || ''} onChange={e => setForm({...form, phone: e.target.value})} />
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <label>Address</label>
-            <textarea rows="3" value={form.address} onChange={e => setForm({...form, address: e.target.value})} style={{ padding: '8px', border: '1px solid var(--border)', borderRadius: '4px' }} />
+            <textarea rows="3" value={form.address || ''} onChange={e => setForm({...form, address: e.target.value})} style={{ padding: '8px', border: '1px solid var(--border)', borderRadius: '4px' }} />
           </div>
           <button type="submit" className="btn btn-primary" style={{ marginTop: '8px' }}>Save Profile</button>
         </form>
@@ -115,6 +117,21 @@ export default function SupplierList() {
         message="Are you sure you want to completely remove this supplier connection? This action is permanent." 
         confirmText="Delete Supplier" 
       />
+
+      <Modal title="Success" isOpen={successModal.isOpen} onClose={() => setSuccessModal({ isOpen: false, message: '' })}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '16px' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--status-green)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <p style={{ fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '24px' }}>{successModal.message}</p>
+          <button 
+            onClick={() => setSuccessModal({ isOpen: false, message: '' })} 
+            style={{ backgroundColor: 'var(--teal-500)', color: '#fff', padding: '8px 24px', borderRadius: '6px', border: 'none', cursor: 'pointer' }}
+          >
+            Acknowledge
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }
