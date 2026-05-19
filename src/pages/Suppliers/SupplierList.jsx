@@ -82,30 +82,37 @@ export default function SupplierList() {
       <DataTable columns={cols} data={suppliers} />
 
       <Modal title={editingId ? 'Edit Supplier' : 'New Supplier'} isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label>Company Name *</label>
-            <input required value={form.name || ''} onChange={e => setForm({...form, name: e.target.value})} />
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>COMPANY DETAILS</label>
+            <input placeholder="e.g. Pfizer Pharmaceuticals Inc." required value={form.name || ''} onChange={e => setForm({...form, name: e.target.value})} style={{ backgroundColor: '#f8fafc', padding: '12px' }} />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label>Contact Person</label>
-            <input value={form.contact || ''} onChange={e => setForm({...form, contact: e.target.value})} />
-          </div>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-              <label>Email</label>
-              <input type="email" value={form.email || ''} onChange={e => setForm({...form, email: e.target.value})} />
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>CONTACT PERSON</label>
+              <input placeholder="John Doe" value={form.contact || ''} onChange={e => setForm({...form, contact: e.target.value})} style={{ backgroundColor: '#f8fafc', padding: '12px' }} />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-              <label>Phone</label>
-              <input value={form.phone || ''} onChange={e => setForm({...form, phone: e.target.value})} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>PHONE NUMBER</label>
+              <input placeholder="+1 (555) 000-0000" value={form.phone || ''} onChange={e => setForm({...form, phone: e.target.value})} style={{ backgroundColor: '#f8fafc', padding: '12px' }} />
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label>Address</label>
-            <textarea rows="3" value={form.address || ''} onChange={e => setForm({...form, address: e.target.value})} style={{ padding: '8px', border: '1px solid var(--border)', borderRadius: '4px' }} />
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>EMAIL ADDRESS</label>
+            <input type="email" placeholder="contact@company.com" value={form.email || ''} onChange={e => setForm({...form, email: e.target.value})} style={{ backgroundColor: '#f8fafc', padding: '12px' }} />
           </div>
-          <button type="submit" className="btn btn-primary" style={{ marginTop: '8px' }}>Save Profile</button>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>BILLING ADDRESS</label>
+            <textarea placeholder="123 Corporate Blvd, Suite 100..." rows="3" value={form.address || ''} onChange={e => setForm({...form, address: e.target.value})} style={{ padding: '12px', backgroundColor: '#f8fafc', border: '1px solid var(--border)', borderRadius: '6px', resize: 'none' }} />
+          </div>
+          
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '12px', paddingTop: '20px', borderTop: '1px solid var(--border)' }}>
+            <button type="button" onClick={() => setModalOpen(false)} style={{ padding: '8px 16px', color: 'var(--text-secondary)', fontWeight: 500, borderRadius: '6px', transition: 'all 0.2s' }} onMouseOver={e=>e.currentTarget.style.backgroundColor='#f1f5f9'} onMouseOut={e=>e.currentTarget.style.backgroundColor='transparent'}>Cancel</button>
+            <button type="submit" className="btn btn-primary" style={{ boxShadow: '0 4px 12px rgba(20, 184, 166, 0.3)', padding: '10px 24px' }}>Save Profile</button>
+          </div>
         </form>
       </Modal>
 

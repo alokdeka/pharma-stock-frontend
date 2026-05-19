@@ -51,7 +51,7 @@ export default function BatchDetail() {
         <div style={{ display: 'flex', gap: '24px', alignItems: 'center', color: 'var(--text-secondary)' }}>
           <div><strong>Quantity:</strong> {batch.quantity}</div>
           <div><strong>Location:</strong> {batch.location}</div>
-          <div><strong>Unit Cost:</strong> ${Number(batch.unit_cost).toFixed(2)}</div>
+          <div><strong>Unit Cost:</strong> ₹{Number(batch.unit_cost).toFixed(2)}</div>
           <div><strong>Mfg Date:</strong> {formatDate(batch.mfg_date)}</div>
           <div><strong>Expiry Date:</strong> {formatDate(batch.expiry_date)}</div>
           <button onClick={() => setSpoilModalOpen(true)} style={{ marginLeft: 'auto', backgroundColor: '#fee2e2', color: '#dc2626', padding: '6px 12px', border: '1px solid #f87171', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>Mark Spoilage</button>
