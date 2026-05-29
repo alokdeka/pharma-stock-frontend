@@ -7,6 +7,7 @@ import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { formatDate } from '../../utils/formatDate';
+import { useNotification } from '../../context/NotificationContext';
 import { 
   Users, 
   Activity, 
@@ -25,6 +26,7 @@ import {
 } from 'lucide-react';
 
 export default function UserManagement() {
+  const { showToast } = useNotification();
   const { role, user: loggedInUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -80,13 +82,15 @@ export default function UserManagement() {
     try {
       if (editingId) {
         await updateUser(editingId, userForm);
+        showToast('Operator profile updated successfully', 'success');
       } else {
         await createUser(userForm);
+        showToast('New operator registered successfully', 'success');
       }
       setModalOpen(false);
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Error saving user');
+      showToast(err.response?.data?.message || 'Error saving user', 'error');
     }
   };
 
@@ -110,9 +114,10 @@ export default function UserManagement() {
     try {
       await deleteUser(deleteModal.id);
       setDeleteModal({ isOpen: false, id: null, email: '' });
+      showToast('Operator account deleted successfully', 'success');
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Cannot delete user');
+      showToast(err.response?.data?.message || 'Cannot delete user', 'error');
     }
   };
 
@@ -131,9 +136,10 @@ export default function UserManagement() {
       // We pass the updated status state
       await updateUser(suspendModal.id, { status: nextStatus });
       setSuspendModal({ isOpen: false, id: null, name: '', currentStatus: 'active' });
+      showToast(`Operator account ${nextStatus === 'suspended' ? 'suspended' : 'activated'} successfully`, 'success');
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to toggle account status');
+      showToast(err.response?.data?.message || 'Failed to toggle account status', 'error');
     }
   };
 

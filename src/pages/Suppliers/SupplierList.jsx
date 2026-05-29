@@ -6,8 +6,10 @@ import Loader from '../../components/ui/Loader';
 import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { formatPhone } from '../../utils/formatCurrency';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function SupplierList() {
+  const { showToast } = useNotification();
   const { role } = useContext(AuthContext);
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +46,9 @@ export default function SupplierList() {
       setModalOpen(false);
       loadData();
       setSuccessModal({ isOpen: true, message: editingId ? 'Supplier successfully updated.' : 'New supplier registered successfully.' });
-    } catch (err) { alert(err.response?.data?.message || 'Error saving supplier'); }
+    } catch (err) { 
+      showToast(err.response?.data?.message || 'Error saving supplier', 'error'); 
+    }
   };
 
   const handleDelete = (id) => {
@@ -54,8 +58,12 @@ export default function SupplierList() {
   const confirmDelete = async () => {
     try {
       await deleteSupplier(confirmModal.id);
+      setConfirmModal({ isOpen: false, id: null });
+      showToast('Supplier successfully deleted', 'success');
       loadData();
-    } catch(err) { alert(err.response?.data?.message || 'Cannot delete supplier.'); }
+    } catch(err) { 
+      showToast(err.response?.data?.message || 'Cannot delete supplier.', 'error'); 
+    }
   }
 
   const cols = [

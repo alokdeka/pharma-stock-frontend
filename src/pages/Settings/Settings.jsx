@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { getSettings, updateSettings, backupDatabase, restoreDatabase } from '../../api/settings';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { DownloadCloud, UploadCloud, AlertTriangle } from 'lucide-react';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function Settings() {
+  const { showToast } = useNotification();
   const [activeTab, setActiveTab] = useState('preferences');
   const [appSettings, setAppSettings] = useState({ timezone: 'UTC', admin_email: '', email_alerts_enabled: 'true' });
   const [loading, setLoading] = useState(false);
@@ -32,9 +34,9 @@ export default function Settings() {
     e.preventDefault();
     try {
       await updateSettings(appSettings);
-      alert('Application settings updated successfully!');
+      showToast('Application settings updated successfully!', 'success');
     } catch (err) { 
-      alert('Error updating settings'); 
+      showToast('Error updating settings', 'error'); 
     }
   };
 
@@ -48,14 +50,17 @@ export default function Settings() {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      showToast('Database backup SQL generated successfully', 'success');
     } catch(err) { 
-      alert('Database Backup Failed.'); 
+      showToast('Database Backup Failed.', 'error'); 
     }
   };
 
   const handleRestore = (e) => {
     e.preventDefault();
-    if (!restoreFile) return alert('Please select a SQL file first.');
+    if (!restoreFile) {
+      return showToast('Please select a SQL file first.', 'warning');
+    }
     setRestoreModalOpen(true);
   };
 
@@ -64,10 +69,13 @@ export default function Settings() {
       const fd = new FormData();
       fd.append('backup_file', restoreFile);
       await restoreDatabase(fd);
-      alert('Database Core restored successfully. Please re-login.');
-      window.location.reload();
+      showToast('Database Core restored successfully. Please re-login.', 'success');
+      // Delay reload to let user see toast
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch(err) {
-      alert(err.response?.data?.message || 'Restore Failed.');
+      showToast(err.response?.data?.message || 'Restore Failed.', 'error');
     }
   };
 

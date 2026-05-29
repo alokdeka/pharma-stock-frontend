@@ -3,8 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createOrder } from '../../api/orders';
 import { getMedicines } from '../../api/medicines';
 import { getSuppliers } from '../../api/suppliers';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function OrderForm() {
+  const { showToast } = useNotification();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const defaultMedId = searchParams.get('medicine_id') || '';
@@ -24,8 +26,11 @@ export default function OrderForm() {
     e.preventDefault();
     try {
       await createOrder(form);
+      showToast('Purchase Order drafted successfully', 'success');
       navigate('/orders');
-    } catch (err) { alert(err.response?.data?.message || 'Error creating order'); }
+    } catch (err) { 
+      showToast(err.response?.data?.message || 'Error creating order', 'error'); 
+    }
   };
 
   return (

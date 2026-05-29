@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import { NotificationProvider } from './context/NotificationContext';
 import AppShell from './components/layout/AppShell';
 
 // Pages
@@ -30,34 +31,36 @@ const ProtectedRoute = () => {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route element={<ProtectedRoute />}>
-            <Route element={<AppShell />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/medicines" element={<MedicineList />} />
-              <Route path="/medicines/new" element={<MedicineForm />} />
-              <Route path="/medicines/:id" element={<MedicineDetail />} />
-              <Route path="/medicines/:id/edit" element={<MedicineForm />} />
-              <Route path="/batches" element={<BatchList />} />
-              <Route path="/batches/new" element={<BatchForm />} />
-              <Route path="/batches/:id" element={<BatchDetail />} />
-              <Route path="/expiry" element={<ExpiryDashboard />} />
-              <Route path="/orders" element={<OrderList />} />
-              <Route path="/orders/new" element={<OrderForm />} />
-              <Route path="/reports" element={<ReportsPage />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/suppliers" element={<SupplierList />} />
-              <Route path="/users" element={<UserManagement />} />
-              
-              {/* Fallback 404 Route */}
-              <Route path="*" element={<NotFound />} />
+      <NotificationProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppShell />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/medicines" element={<MedicineList />} />
+                <Route path="/medicines/new" element={<MedicineForm />} />
+                <Route path="/medicines/:id" element={<MedicineDetail />} />
+                <Route path="/medicines/:id/edit" element={<MedicineForm />} />
+                <Route path="/batches" element={<BatchList />} />
+                <Route path="/batches/new" element={<BatchForm />} />
+                <Route path="/batches/:id" element={<BatchDetail />} />
+                <Route path="/expiry" element={<ExpiryDashboard />} />
+                <Route path="/orders" element={<OrderList />} />
+                <Route path="/orders/new" element={<OrderForm />} />
+                <Route path="/reports" element={<ReportsPage />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/suppliers" element={<SupplierList />} />
+                <Route path="/users" element={<UserManagement />} />
+                
+                {/* Fallback 404 Route */}
+                <Route path="*" element={<NotFound />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

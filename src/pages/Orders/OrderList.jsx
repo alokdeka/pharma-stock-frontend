@@ -8,8 +8,10 @@ import Loader from '../../components/ui/Loader';
 import Badge from '../../components/ui/Badge';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { formatDate } from '../../utils/formatDate';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function OrderList() {
+  const { showToast } = useNotification();
   const [orders, setOrders] = useState([]);
   const [medicines, setMedicines] = useState({});
   const [loading, setLoading] = useState(true);
@@ -36,8 +38,12 @@ export default function OrderList() {
   const confirmStatusUpdate = async () => {
     try {
       await updateOrderStatus(confirmModal.id, confirmModal.status);
+      setConfirmModal({ isOpen: false, id: null, status: '' });
+      showToast(`Purchase Order marked as ${confirmModal.status} successfully`, 'success');
       loadData();
-    } catch (err) { alert('Failed to update status'); }
+    } catch (err) { 
+      showToast('Failed to update Purchase Order status', 'error'); 
+    }
   };
 
   const cols = [

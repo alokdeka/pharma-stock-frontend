@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createMedicine, getMedicine, updateMedicine } from '../../api/medicines';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function MedicineForm() {
+  const { showToast } = useNotification();
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = !!id;
@@ -11,7 +13,7 @@ export default function MedicineForm() {
 
   useEffect(() => {
     if (isEdit) {
-      getMedicine(id).then(res => setForm(res.data.data)).catch(() => alert('Failed to load'));
+      getMedicine(id).then(res => setForm(res.data.data)).catch(() => showToast('Failed to load medicine details', 'error'));
     }
   }, [id, isEdit]);
 
@@ -20,12 +22,14 @@ export default function MedicineForm() {
     try {
       if (isEdit) {
         await updateMedicine(id, form);
+        showToast('Medicine details updated successfully', 'success');
       } else {
         await createMedicine(form);
+        showToast('New medicine catalog entry created successfully', 'success');
       }
       navigate('/medicines');
     } catch (err) {
-      alert(err.response?.data?.message || 'Error saving medicine');
+      showToast(err.response?.data?.message || 'Error saving medicine', 'error');
     }
   };
 

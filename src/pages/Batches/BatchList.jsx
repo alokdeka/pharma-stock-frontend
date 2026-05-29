@@ -9,8 +9,10 @@ import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
 import { Search } from 'lucide-react';
 import { formatDate } from '../../utils/formatDate';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function BatchList() {
+  const { showToast } = useNotification();
   const [batches, setBatches] = useState([]);
   const [medicines, setMedicines] = useState({});
   const [loading, setLoading] = useState(true);
@@ -58,7 +60,7 @@ export default function BatchList() {
       loadData();
       setSuccessModal({ isOpen: true, message: 'Sale recorded successfully. FEFO logic applied.' });
     } catch (err) {
-      alert(err.response?.data?.message || 'Error recording sale');
+      showToast(err.response?.data?.message || 'Error recording sale', 'error');
     }
   };
 

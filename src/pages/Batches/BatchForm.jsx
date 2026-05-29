@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBatch } from '../../api/batches';
 import { getMedicines } from '../../api/medicines';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function BatchForm() {
+  const { showToast } = useNotification();
   const navigate = useNavigate();
   const [medicines, setMedicines] = useState([]);
   const [form, setForm] = useState({ medicine_id: '', batch_number: '', mfg_date: '', expiry_date: '', quantity: '', location: 'Main Warehouse', unit_cost: '' });
@@ -15,13 +17,14 @@ export default function BatchForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (new Date(form.expiry_date) <= new Date(form.mfg_date)) {
-      return alert('Expiry date must be after manufacturing date');
+      return showToast('Expiry date must be after manufacturing date', 'warning');
     }
     try {
       await createBatch(form);
+      showToast('Batch intake recorded successfully', 'success');
       navigate('/batches');
     } catch (err) {
-      alert(err.response?.data?.message || 'Error saving batch');
+      showToast(err.response?.data?.message || 'Error saving batch', 'error');
     }
   };
 

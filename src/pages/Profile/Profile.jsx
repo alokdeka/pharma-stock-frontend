@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getMyProfile, updateMyProfile, updateMyPassword } from '../../api/users';
 import Loader from '../../components/ui/Loader';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function Profile() {
+  const { showToast } = useNotification();
   const [profile, setProfile] = useState({ name: '', email: '', role: '' });
   const [passwords, setPasswords] = useState({ old_password: '', new_password: '', confirm: '' });
   const [loading, setLoading] = useState(true);
@@ -18,21 +20,23 @@ export default function Profile() {
     e.preventDefault();
     try {
       await updateMyProfile({ name: profile.name, email: profile.email });
-      alert('Profile updated successfully');
+      showToast('Profile updated successfully', 'success');
     } catch (err) {
-      alert(err.response?.data?.message || 'Error updating profile');
+      showToast(err.response?.data?.message || 'Error updating profile', 'error');
     }
   };
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    if (passwords.new_password !== passwords.confirm) return alert('Passwords do not match');
+    if (passwords.new_password !== passwords.confirm) {
+      return showToast('Passwords do not match', 'warning');
+    }
     try {
       await updateMyPassword({ old_password: passwords.old_password, new_password: passwords.new_password });
       setPasswords({ old_password: '', new_password: '', confirm: '' });
-      alert('Password updated successfully');
+      showToast('Password updated successfully', 'success');
     } catch (err) {
-      alert(err.response?.data?.message || 'Incorrect old password');
+      showToast(err.response?.data?.message || 'Incorrect old password', 'error');
     }
   };
 

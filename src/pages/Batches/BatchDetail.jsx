@@ -7,8 +7,10 @@ import Badge from '../../components/ui/Badge';
 import Modal from '../../components/ui/Modal';
 import { formatDate } from '../../utils/formatDate';
 import { formatCurrency } from '../../utils/formatCurrency';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function BatchDetail() {
+  const { showToast } = useNotification();
   const { id } = useParams();
   const [batch, setBatch] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,13 +28,18 @@ export default function BatchDetail() {
 
   const handleSpoil = async (e) => {
     e.preventDefault();
-    if (!spoilQty || spoilQty <= 0) return alert('Enter valid quantity');
+    if (!spoilQty || spoilQty <= 0) {
+      return showToast('Enter valid quantity', 'warning');
+    }
     try {
       await spoilBatch(id, { quantity: parseInt(spoilQty), reason: spoilReason });
       setSpoilModalOpen(false);
       setSpoilQty('');
+      showToast('Stock marked as spoiled successfully', 'success');
       getBatch(id).then(res => setBatch(res.data.data)); // Reload
-    } catch(err) { alert(err.response?.data?.message || 'Error marking spoilage'); }
+    } catch(err) { 
+      showToast(err.response?.data?.message || 'Error marking spoilage', 'error'); 
+    }
   }
 
   if (loading) return <Loader />;

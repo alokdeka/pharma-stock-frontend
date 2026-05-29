@@ -7,8 +7,10 @@ import Loader from '../../components/ui/Loader';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { Search } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatCurrency';
+import { useNotification } from '../../context/NotificationContext';
 
 export default function MedicineList() {
+  const { showToast } = useNotification();
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -37,8 +39,12 @@ export default function MedicineList() {
   const confirmDelete = async () => {
     try {
       await deleteMedicine(confirmModal.id);
+      setConfirmModal({ isOpen: false, id: null });
+      showToast('Medicine catalog entry deleted successfully', 'success');
       loadData();
-    } catch (e) { alert('Failed to delete medicine'); }
+    } catch (e) { 
+      showToast('Failed to delete medicine catalog entry', 'error'); 
+    }
   };
 
   const categories = [...new Set(medicines.map(m => m.category).filter(Boolean))];
