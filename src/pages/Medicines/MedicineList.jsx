@@ -6,6 +6,7 @@ import DataTable from '../../components/ui/DataTable';
 import Loader from '../../components/ui/Loader';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { Search } from 'lucide-react';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function MedicineList() {
   const [medicines, setMedicines] = useState([]);
@@ -52,7 +53,7 @@ export default function MedicineList() {
     { key: 'name', label: 'Name' },
     { key: 'manufacturer', label: 'Manufacturer' },
     { key: 'category', label: 'Category' },
-    { key: 'price', label: 'Price', render: (val) => `₹${Number(val).toFixed(2)}` },
+    { key: 'price', label: 'Price', render: (val) => formatCurrency(val) },
     { key: 'current_stock', label: 'Stock', render: (val, row) => (
       <span style={{ color: Number(val) < Number(row.reorder_point) ? 'var(--status-red)' : 'inherit', fontWeight: Number(val) < Number(row.reorder_point) ? 'bold' : 'normal' }}>
         {val}

@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 import { getInventoryReport, getBatchSales, getTransactions, getFinancials } from '../../api/reports';
 import DataTable from '../../components/ui/DataTable';
 import { formatDate } from '../../utils/formatDate';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function ReportsPage() {
   const [activeTab, setActiveTab] = useState('inventory');
@@ -140,15 +141,15 @@ export default function ReportsPage() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
                   <div style={{ backgroundColor: '#f0fdf9', padding: '24px', borderRadius: '8px', border: '1px solid #ccfbf1' }}>
                     <h4 style={{ margin: 0, color: 'var(--teal-600)', paddingBottom: '8px' }}>Gross Revenue (Retail)</h4>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--teal-700)' }}>${Number(financials.total_revenue).toFixed(2)}</div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--teal-700)' }}>{formatCurrency(financials.total_revenue)}</div>
                   </div>
                   <div style={{ backgroundColor: '#fffbeb', padding: '24px', borderRadius: '8px', border: '1px solid #fef3c7' }}>
                     <h4 style={{ margin: 0, color: '#d97706', paddingBottom: '8px' }}>Cost of Goods Sold (COGS)</h4>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#b45309' }}>${Number(financials.cost_of_goods_sold).toFixed(2)}</div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#b45309' }}>{formatCurrency(financials.cost_of_goods_sold)}</div>
                   </div>
                   <div style={{ backgroundColor: '#fef2f2', padding: '24px', borderRadius: '8px', border: '1px solid #fee2e2' }}>
                     <h4 style={{ margin: 0, color: 'var(--status-red)', paddingBottom: '8px' }}>Spoilage Write-offs</h4>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#b91c1c' }}>${Number(financials.spoilage_loss).toFixed(2)}</div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#b91c1c' }}>{formatCurrency(financials.spoilage_loss)}</div>
                   </div>
                 </div>
               </div>

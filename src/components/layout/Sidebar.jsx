@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Pill, Layers, AlertTriangle, ShoppingCart, BarChart2, Settings, LogOut, Activity, Truck } from 'lucide-react';
+import { LayoutDashboard, Pill, Layers, AlertTriangle, ShoppingCart, BarChart2, Settings, LogOut, Activity, Truck, Users } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
@@ -50,9 +50,14 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
       </nav>
       <div style={{ padding: '24px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {role === 'admin' && (
-          <button onClick={() => navigate('/settings')} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-secondary)', padding: '12px 0' }}>
-            <Settings size={20} /> Settings
-          </button>
+          <>
+            <button onClick={() => navigate('/users')} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-secondary)', padding: '12px 0' }}>
+              <Users size={20} /> Users
+            </button>
+            <button onClick={() => navigate('/settings')} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-secondary)', padding: '12px 0' }}>
+              <Settings size={20} /> Settings
+            </button>
+          </>
         )}
         <button onClick={logout} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--status-red)', padding: '12px 0' }}>
           <LogOut size={20} /> Logout

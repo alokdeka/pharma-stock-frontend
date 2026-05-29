@@ -51,7 +51,7 @@ export default function Dashboard() {
         })));
 
         setSalesData(salesRes.data.data.map(s => ({
-          name: new Date(s.name).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+          name: new Date(s.name).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' }),
           Volume: Number(s.volume)
         })));
 

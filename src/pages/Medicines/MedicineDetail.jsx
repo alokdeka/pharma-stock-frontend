@@ -4,6 +4,7 @@ import { getMedicine } from '../../api/medicines';
 import { searchBatch } from '../../api/batches';
 import Loader from '../../components/ui/Loader';
 import DataTable from '../../components/ui/DataTable';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function MedicineDetail() {
   const { id } = useParams();
@@ -42,7 +43,7 @@ export default function MedicineDetail() {
         <div style={{ display: 'flex', gap: '24px', color: 'var(--text-secondary)' }}>
           <div><strong>Manufacturer:</strong> {medicine.manufacturer}</div>
           <div><strong>Category:</strong> {medicine.category}</div>
-          <div><strong>Price:</strong> ₹{Number(medicine.price).toFixed(2)}</div>
+          <div><strong>Price:</strong> {formatCurrency(medicine.price)}</div>
           <div><strong>Stock:</strong> {medicine.current_stock}</div>
         </div>
       </div>

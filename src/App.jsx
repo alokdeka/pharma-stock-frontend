@@ -19,6 +19,7 @@ import ReportsPage from './pages/Reports/ReportsPage';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import SupplierList from './pages/Suppliers/SupplierList';
+import UserManagement from './pages/Users/UserManagement';
 import NotFound from './pages/NotFound';
 
 const ProtectedRoute = () => {
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/suppliers" element={<SupplierList />} />
+              <Route path="/users" element={<UserManagement />} />
               
               {/* Fallback 404 Route */}
               <Route path="*" element={<NotFound />} />

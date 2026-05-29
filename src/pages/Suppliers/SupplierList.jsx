@@ -5,6 +5,7 @@ import DataTable from '../../components/ui/DataTable';
 import Loader from '../../components/ui/Loader';
 import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
+import { formatPhone } from '../../utils/formatCurrency';
 
 export default function SupplierList() {
   const { role } = useContext(AuthContext);
@@ -61,7 +62,7 @@ export default function SupplierList() {
     { key: 'name', label: 'Company Name' },
     { key: 'contact', label: 'Contact Person' },
     { key: 'email', label: 'Email' },
-    { key: 'phone', label: 'Phone' },
+    { key: 'phone', label: 'Phone', render: (val) => formatPhone(val) },
     { key: 'actions', label: 'Actions', render: (_, row) => role !== 'distributor' && (
       <div style={{ display: 'flex', gap: '8px' }}>
         <button onClick={() => openModal(row)} style={{ color: 'var(--teal-500)', fontSize: '0.8rem' }}>Edit</button>
@@ -95,7 +96,7 @@ export default function SupplierList() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>PHONE NUMBER</label>
-              <input placeholder="+1 (555) 000-0000" value={form.phone || ''} onChange={e => setForm({...form, phone: e.target.value})} style={{ backgroundColor: '#f8fafc', padding: '12px' }} />
+              <input placeholder="+91 98765 43210" value={form.phone || ''} onChange={e => setForm({...form, phone: e.target.value})} style={{ backgroundColor: '#f8fafc', padding: '12px' }} />
             </div>
           </div>
           
