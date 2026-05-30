@@ -53,10 +53,22 @@ export default function OrderList() {
     { key: 'status', label: 'Status', render: (val) => <Badge status={val} label={val.toUpperCase()} /> },
     { key: 'actions', label: 'Actions', render: (_, row) => (
       role === 'admin' && row.status !== 'received' ? (
-        <select onChange={(e) => { if(e.target.value) handleStatusUpdate(row.id, e.target.value) }} value="" style={{ padding: '4px', fontSize: '0.8rem' }}>
+        <select 
+          onChange={(e) => { 
+            const val = e.target.value;
+            if (val === 'ingest') {
+              navigate(`/batches/new?po_id=${row.id}&medicine_id=${row.medicine_id}&quantity=${row.quantity}`);
+            } else if (val) {
+              handleStatusUpdate(row.id, val);
+            }
+          }} 
+          value="" 
+          style={{ padding: '4px', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}
+        >
           <option value="">Update Status...</option>
           {row.status === 'pending' && <option value="approved">Approve</option>}
-          {(row.status === 'pending' || row.status === 'approved') && <option value="received">Mark Received</option>}
+          {row.status === 'approved' && <option value="ingest">Receive & Ingest Batch</option>}
+          {(row.status === 'pending' || row.status === 'approved') && <option value="received">Mark Received (Direct)</option>}
         </select>
       ) : null
     )}
