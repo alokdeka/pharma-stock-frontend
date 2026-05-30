@@ -6,3 +6,4 @@ export const getBatchSales       = (batchNumber)  => api.get(`/reports/batch-sal
 export const getTransactions     = (from, to)     => api.get(`/reports/transactions?from=${from}&to=${to}`);
 export const getSalesTrend       = ()             => api.get('/reports/sales-trend');
 export const getFinancials       = ()             => api.get('/reports/financials');
+export const getCalendarEvents    = ()             => api.get('/reports/calendar-events');

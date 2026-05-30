@@ -22,6 +22,7 @@ import Settings from './pages/Settings/Settings';
 import SupplierList from './pages/Suppliers/SupplierList';
 import UserManagement from './pages/Users/UserManagement';
 import WarehouseMap from './pages/Warehouse/WarehouseMap';
+import OperationsCalendar from './pages/Calendar/OperationsCalendar';
 import NotFound from './pages/NotFound';
 
 const ProtectedRoute = () => {
@@ -55,6 +56,7 @@ export default function App() {
                 <Route path="/suppliers" element={<SupplierList />} />
                 <Route path="/users" element={<UserManagement />} />
                 <Route path="/warehouse-map" element={<WarehouseMap />} />
+                <Route path="/calendar" element={<OperationsCalendar />} />
                 
                 {/* Fallback 404 Route */}
                 <Route path="*" element={<NotFound />} />

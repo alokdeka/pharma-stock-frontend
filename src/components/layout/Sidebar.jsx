@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Pill, Layers, AlertTriangle, ShoppingCart, BarChart2, Settings, LogOut, Activity, Truck, Users, Warehouse } from 'lucide-react';
+import { LayoutDashboard, Pill, Layers, AlertTriangle, ShoppingCart, BarChart2, Settings, LogOut, Activity, Truck, Users, Warehouse, Calendar } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
@@ -12,6 +12,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
     { to: '/medicines', icon: Pill, label: 'Medicines' },
     { to: '/batches', icon: Layers, label: 'Batches' },
     { to: '/warehouse-map', icon: Warehouse, label: 'Warehouse Map' },
+    { to: '/calendar', icon: Calendar, label: 'Operations Calendar' },
     { to: '/expiry', icon: AlertTriangle, label: 'Expiry Monitor' },
     { to: '/orders', icon: ShoppingCart, label: 'Purchase Orders' },
     { to: '/suppliers', icon: Truck, label: 'Suppliers' },
