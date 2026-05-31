@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createBatch } from '../../api/batches';
 import { getMedicines } from '../../api/medicines';
+import { getLocations } from '../../api/locations';
 import { useNotification } from '../../context/NotificationContext';
 
 export default function BatchForm() {
@@ -14,6 +15,7 @@ export default function BatchForm() {
   const quantityParam = searchParams.get('quantity');
 
   const [medicines, setMedicines] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [isCustomLoc, setIsCustomLoc] = useState(false);
   const [form, setForm] = useState({ 
     medicine_id: medicineIdParam || '', 
@@ -21,22 +23,9 @@ export default function BatchForm() {
     mfg_date: '', 
     expiry_date: '', 
     quantity: quantityParam || '', 
-    location: 'Aisle A - Shelf 1', 
+    location: '', 
     unit_cost: '' 
   });
-
-  const standardLocations = [
-    'Aisle A - Shelf 1',
-    'Aisle A - Shelf 2',
-    'Aisle A - Shelf 3',
-    'Aisle B - Shelf 1',
-    'Aisle B - Shelf 2',
-    'Aisle B - Shelf 3',
-    'Cold Storage Zone A',
-    'Cold Storage Zone B',
-    'Secured Vault Zone A',
-    'Secured Vault Zone B',
-  ];
 
   useEffect(() => {
     getMedicines().then(res => {
@@ -50,6 +39,13 @@ export default function BatchForm() {
             unit_cost: (parseFloat(med.price) * 0.60).toFixed(2)
           }));
         }
+      }
+    }).catch(() => {});
+
+    getLocations().then(res => {
+      setLocations(res.data.data);
+      if (res.data.data.length > 0) {
+        setForm(prev => ({ ...prev, location: res.data.data[0].name }));
       }
     }).catch(() => {});
   }, [medicineIdParam]);
@@ -146,7 +142,7 @@ export default function BatchForm() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label>Storage Location / Bin Mapping</label>
           <select value={isCustomLoc ? 'CUSTOM' : form.location} onChange={handleLocationChange}>
-            {standardLocations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+            {locations.map(loc => <option key={loc.id} value={loc.name}>{loc.name}</option>)}
             <option value="CUSTOM">Custom Location...</option>
           </select>
           {isCustomLoc && (

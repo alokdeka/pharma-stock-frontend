@@ -69,10 +69,10 @@ export default function Dashboard() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', paddingBottom: '24px' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
-        <StatCard title="Total Medicines" icon={Pill} value={stats.medicines} />
-        <StatCard title="Total Batches" icon={Layers} value={stats.batches} />
-        <StatCard title="Expiring Soon" icon={AlertTriangle} value={stats.expiring} highlight={stats.expiring > 0} />
-        <StatCard title="Low Stock Items" icon={TrendingDown} value={stats.lowStock} highlight={stats.lowStock > 0} />
+        <StatCard title="Total Medicines" icon={Pill} value={stats.medicines} onClick={() => navigate('/medicines')} />
+        <StatCard title="Total Batches" icon={Layers} value={stats.batches} onClick={() => navigate('/batches')} />
+        <StatCard title="Expiring Soon" icon={AlertTriangle} value={stats.expiring} highlight={stats.expiring > 0} onClick={() => navigate('/expiry')} />
+        <StatCard title="Low Stock Items" icon={TrendingDown} value={stats.lowStock} highlight={stats.lowStock > 0} onClick={() => navigate('/orders')} />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>

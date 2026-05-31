@@ -23,6 +23,7 @@ import SupplierList from './pages/Suppliers/SupplierList';
 import UserManagement from './pages/Users/UserManagement';
 import WarehouseMap from './pages/Warehouse/WarehouseMap';
 import OperationsCalendar from './pages/Calendar/OperationsCalendar';
+import LocationList from './pages/Warehouse/LocationList';
 import NotFound from './pages/NotFound';
 
 const ProtectedRoute = () => {
@@ -57,6 +58,7 @@ export default function App() {
                 <Route path="/users" element={<UserManagement />} />
                 <Route path="/warehouse-map" element={<WarehouseMap />} />
                 <Route path="/calendar" element={<OperationsCalendar />} />
+                <Route path="/locations" element={<LocationList />} />
                 
                 {/* Fallback 404 Route */}
                 <Route path="*" element={<NotFound />} />

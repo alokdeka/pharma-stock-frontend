@@ -73,6 +73,22 @@ export default function WarehouseMap() {
     loadData();
   }, []);
 
+  const getSectorForLocation = (locationStr) => {
+    if (!locationStr) return 'aisle-a';
+    const loc = locationStr.toLowerCase();
+    if (loc.includes('aisle b') || loc.includes('aisle-b')) {
+      return 'aisle-b';
+    }
+    if (loc.includes('cold') || loc.includes('fridge') || loc.includes('refrigerated') || loc.includes('refrigerator')) {
+      return 'cold-storage';
+    }
+    if (loc.includes('vault') || loc.includes('secured') || loc.includes('secure')) {
+      return 'secured-vault';
+    }
+    // Default fallback is Aisle A
+    return 'aisle-a';
+  };
+
   const handleSearch = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
@@ -88,14 +104,10 @@ export default function WarehouseMap() {
       const medName = medicines[b.medicine_id]?.toLowerCase() || '';
       const batchNum = b.batch_number.toLowerCase();
       if (medName.includes(query) || batchNum.includes(query)) {
-        sectors.forEach(sec => {
-          // If location matches or it is a fallback
-          if (sec.locations.includes(b.location) || (sec.id === 'aisle-a' && (!b.location || b.location === 'Main Warehouse'))) {
-            if (!matches.includes(sec.id)) {
-              matches.push(sec.id);
-            }
-          }
-        });
+        const sectorId = getSectorForLocation(b.location);
+        if (!matches.includes(sectorId)) {
+          matches.push(sectorId);
+        }
       }
     });
 
@@ -104,16 +116,7 @@ export default function WarehouseMap() {
 
   // Helper to categorize batches per sector
   const getSectorBatches = (sectorId) => {
-    const targetSector = sectors.find(s => s.id === sectorId);
-    if (!targetSector) return [];
-    
-    return batches.filter(b => {
-      // Aisle A captures general fallback / Main Warehouse if no specific zone matches
-      if (sectorId === 'aisle-a') {
-        return targetSector.locations.includes(b.location) || !b.location || b.location === 'Main Warehouse' || (!targetSector.locations.includes(b.location) && !sectors.some(s => s.locations.includes(b.location)));
-      }
-      return targetSector.locations.includes(b.location);
-    });
+    return batches.filter(b => getSectorForLocation(b.location) === sectorId);
   };
 
   // Helper to calculate statistics for each sector

@@ -1,8 +1,31 @@
 import React from 'react';
 
-export default function StatCard({ title, icon: Icon, value, subtitle, highlight }) {
+export default function StatCard({ title, icon: Icon, value, subtitle, highlight, onClick }) {
   return (
-    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: highlight ? '4px solid var(--status-red)' : 'none' }}>
+    <div 
+      className="card" 
+      onClick={onClick}
+      style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '16px', 
+        borderLeft: highlight ? '4px solid var(--status-red)' : 'none',
+        cursor: onClick ? 'pointer' : 'default',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+      }}
+      onMouseEnter={(e) => {
+        if (onClick) {
+          e.currentTarget.style.transform = 'translateY(-2px)';
+          e.currentTarget.style.boxShadow = '0 6px 16px -4px rgba(0, 0, 0, 0.08)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (onClick) {
+          e.currentTarget.style.transform = 'none';
+          e.currentTarget.style.boxShadow = 'none';
+        }
+      }}
+    >
       <div style={{ backgroundColor: 'var(--teal-100)', color: 'var(--teal-700)', padding: '12px', borderRadius: '10px' }}>
         {Icon && <Icon size={24} />}
       </div>
